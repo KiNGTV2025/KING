@@ -7,7 +7,8 @@
   "atv": {
     "name": "Atv",
     "group": "Ulusal - Yurt Dışı ",
-    "url": "http://89.187.191.41:80/ATV-HD-TR/video.m3u8"
+    "url": "https://ottcdn.kablowebtv.net/live_turksat_sub3/traceurban_stream/index.m3u8?wmsAuthSign=c2VydmVyX3RpbWU9Ni8xLzIwMjUgMTE6MjU6MDYgUE0maGFzaF92YWx1ZT1lRlhmbUJpYUUrSDdsWVFtS3M0OEFRPT0mdmFsaWRtaW51dGVzPTI4ODAmaWQ9MDkzZDcyMGEtNTAyYy00MWVkLWE4MGYtMmI4MTY5ODRmYjk1LDg5NzQxZmVjLTFkMzMtNGMwMC1hZmNkLTNmZGFmZTBiNmEyZCwxNTJiZDUzOS02MjIwLTQ0MjctYTkxNS1iZjRiZDA2OGQ3ZTgsYTY5OWI4M2YtODI2Yi00ZDk5LTkzNjEtYzhhMzEzMjE4ZDQ2LDAsOjpmZmZmOjEwLjAuMC42
+"
   },
   "kanald": {
     "name": "Kanal D",
