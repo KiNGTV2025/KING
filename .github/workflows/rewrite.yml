@@ -26,6 +26,7 @@ jobs:
       - name: Dosya listesini ve içeriği göster
         run: |
           ls -l
+          
           head -20 playlist.m3u || echo "playlist.m3u bulunamadı"
 
       - name: Değişiklikleri commit et ve push yap
