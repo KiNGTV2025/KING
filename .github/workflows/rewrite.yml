@@ -30,10 +30,10 @@ jobs:
         run: |
           ls -l playlist.m3u || echo "playlist.m3u oluşturulamadı"
 
-      - name: Değişiklikleri commit et ve pushla
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git add playlist.m3u
-          git diff --cached --quiet && echo "Değişiklik yok, commit yapılmadı." || git commit -m "Otomatik playlist güncellemesi"
-          git push
+      - name: Dosyayı commitle ve gönder
+  run: |
+    git config --global user.name "GitHub Actions"
+    git config --global user.email "actions@github.com"
+    git add playlist.m3u
+    git commit -m "Otomatik: playlist.m3u güncellendi" || echo "Commit yok"
+    git push origin main
