@@ -1,8 +1,8 @@
 BASE_URL = "https://canliyayin.umitm0d.workers.dev/"
-output = []
 
 input_file = "1UmitTV.m3u"
 output_file = "playlist.m3u"
+output = []
 
 try:
     with open(input_file, "r", encoding="utf-8") as f:
