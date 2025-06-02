@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: write  # Push izni ver
+      contents: write  # Repo'ya dosya yazma ve push için izin
 
     steps:
       - name: Repo'yu klonla
