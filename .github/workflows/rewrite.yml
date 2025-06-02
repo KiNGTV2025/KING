@@ -23,15 +23,15 @@ jobs:
       - name: Scripti çalıştır
         run: python umitrew.py
 
-      - name: Dosya listesini ve içeriği göster
+      - name: playlist.m3u oluşturuldu mu kontrol et
         run: |
           ls -l
-          head -20 playlist.m3u || echo "playlist.m3u bulunamadı"
+          head -n 10 playlist.m3u || echo "playlist.m3u bulunamadı"
 
       - name: Değişiklikleri commit et ve push yap
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           git add playlist.m3u
-          git diff --cached --quiet || git commit -m "Otomatik rewrite: playlist.m3u güncellendi"
+          git diff --cached --quiet || git commit -m "Otomatik playlist.m3u güncellendi"
           git push
