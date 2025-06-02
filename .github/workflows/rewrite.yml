@@ -11,6 +11,9 @@ jobs:
   rewrite:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write  # Push izni ver
+
     steps:
       - name: Repo'yu klonla
         uses: actions/checkout@v3
@@ -23,15 +26,14 @@ jobs:
       - name: Scripti çalıştır
         run: python umitrew.py
 
-      - name: playlist.m3u oluşturuldu mu kontrol et
+      - name: playlist.m3u var mı?
         run: |
-          ls -l
-          head -n 10 playlist.m3u || echo "playlist.m3u bulunamadı"
+          ls -l playlist.m3u || echo "playlist.m3u oluşturulamadı"
 
-      - name: Değişiklikleri commit et ve push yap
+      - name: Değişiklikleri commit et ve pushla
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           git add playlist.m3u
-          git diff --cached --quiet || git commit -m "Otomatik playlist.m3u güncellendi"
+          git diff --cached --quiet && echo "Değişiklik yok, commit yapılmadı." || git commit -m "Otomatik playlist güncellemesi"
           git push
