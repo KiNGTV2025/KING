@@ -21,7 +21,7 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: EPG oluştur
-        run: python epg.py
+        run: python aqepg.py
 
       - name: Değişiklikleri commit et ve pushla
         run: |
