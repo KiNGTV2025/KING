@@ -11,6 +11,7 @@ BELGESELSEMO_URL = "https://belgeselsemo.com.tr/yayin-akisi2/xml/turkey3.xml"
 
 KANALLAR_DOSYA = "kanallar.txt"
 EPG_CIKTI = "epg.xml"
+UYUSMAYAN_DOSYA = "uyusmayanlar.txt"
 
 def normalize_tvg_id(name):
     """Kanal adından tvg-id oluşturur"""
@@ -84,6 +85,7 @@ def get_digiturk_epg():
 
 # 2️⃣ Belgeselsemo EPG'sini çek ve Digiturk tvg-id'lerine göre güncelle
 def merge_belgeselsemo(tv_root, kanallar_dict):
+    uyusmayanlar = set()
     print("📥 Belgeselsemo XML indiriliyor...")
     r = requests.get(BELGESELSEMO_URL, timeout=15)
     r.raise_for_status()
@@ -101,8 +103,10 @@ def merge_belgeselsemo(tv_root, kanallar_dict):
         ch_name = belgesel_map.get(ch_id, ch_id)
         digiturk_tvg_id = kanallar_dict.get(ch_name)
         if not digiturk_tvg_id:
+            uyusmayanlar.add(f"{ch_name} => {ch_id}")
             continue
 
+        # Türkiye saatine +3 ekle
         start = datetime.strptime(prog.get("start")[:12], "%Y%m%d%H%M") + timedelta(hours=3)
         stop = datetime.strptime(prog.get("stop")[:12], "%Y%m%d%H%M") + timedelta(hours=3)
 
@@ -114,6 +118,11 @@ def merge_belgeselsemo(tv_root, kanallar_dict):
 
         title_elem = prog.find("title")
         ET.SubElement(programme, "title").text = title_elem.text if title_elem is not None else "Bilinmeyen Program"
+
+    # Uyuşmayanları kaydet
+    if uyusmayanlar:
+        with open(UYUSMAYAN_DOSYA, "w", encoding="utf-8") as f:
+            f.write("\n".join(sorted(uyusmayanlar)))
 
 # 3️⃣ Ana çalışma
 if __name__ == "__main__":
@@ -132,4 +141,4 @@ if __name__ == "__main__":
     tree = ET.ElementTree(tv_root)
     tree.write(EPG_CIKTI, encoding="utf-8", xml_declaration=True)
 
-    print(f"✅ {EPG_CIKTI} oluşturuldu, {KANALLAR_DOSYA} hazır.")
+    print(f"✅ {EPG_CIKTI} oluşturuldu, {KANALLAR_DOSYA} ve {UYUSMAYAN_DOSYA} hazır.")
