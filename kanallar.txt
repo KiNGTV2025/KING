@@ -1,149 +1,149 @@
-24 HD.tr => 24hdtr => Belgeselsemo
-360 HD.tr => 360hdtr => Belgeselsemo
-A HABER HD.tr => ahaberhdtr => Belgeselsemo
-A NEWS HD.tr => anewshdtr => Belgeselsemo
-A PARA HD.tr => aparahdtr => Belgeselsemo
-A SPOR HD.tr => asporhdtr => Belgeselsemo
-A2 HD.tr => a2hdtr => Belgeselsemo
-AKİT TV HD.tr => akittvhdtr => Belgeselsemo
-AL JAZEERA ARABIC HD.tr => aljazeeraarabichdtr => Belgeselsemo
-AL JAZEERA ENGLISH.tr => aljazeeraenglishtr => Belgeselsemo
-AS TV.tr => astvtr => Belgeselsemo
-ATV HD.tr => atvhdtr => Belgeselsemo
-BABYTV.tr => babytvtr => Belgeselsemo
-BBC News.tr => bbcnewstr => Belgeselsemo
-BENGÜTÜRK.tr => benguturktr => Belgeselsemo
-BEYAZ TV HD.tr => beyaztvhdtr => Belgeselsemo
-BLOOMBERG HT HD.tr => bloomberghthdtr => Belgeselsemo
-BRT 1 HD.tr => brt1hdtr => Belgeselsemo
-BRT 2 HD.tr => brt2hdtr => Belgeselsemo
-Bloomberg.tr => bloombergtr => Belgeselsemo
-BluTV Play 1.tr => blutvplay1tr => Belgeselsemo
-BluTV Play 2.tr => blutvplay2tr => Belgeselsemo
-BİZİM EV TV.tr => bizimevtvtr => Belgeselsemo
-CARTOON NETWORK.tr => cartoonnetworktr => Belgeselsemo
-CARTOONITO.tr => cartoonitotr => Belgeselsemo
-CNBC-E.tr => cnbcetr => Belgeselsemo
-CNN International.tr => cnninternationaltr => Belgeselsemo
-CNN TÜRK HD.tr => cnnturkhdtr => Belgeselsemo
-DA VINCI HD.tr => davincihdtr => Belgeselsemo
-DEUTSCHE WELLE ENGLISH.tr => deutschewelleenglishtr => Belgeselsemo
-DISCOVERY CHANNEL HD.tr => discoverychannelhdtr => Belgeselsemo
-DISNEY JUNIOR.tr => disneyjuniortr => Belgeselsemo
-DMAX HD.tr => dmaxhdtr => Belgeselsemo
-DREAM TÜRK.tr => dreamturktr => Belgeselsemo
-DUCK TV HD.tr => ducktvhdtr => Belgeselsemo
-DİYANET TV.tr => diyanettvtr => Belgeselsemo
-EKOL TV.tr => ekoltvtr => Belgeselsemo
-EKOTÜRK HD.tr => ekoturkhdtr => Belgeselsemo
-ENGLISH CLUB TV.tr => englishclubtvtr => Belgeselsemo
-EPIC DRAMA.tr => epicdramatr => Belgeselsemo
-EURONEWS.tr => euronewstr => Belgeselsemo
-EUROSPORT 1 HD.tr => eurosport1hdtr => Belgeselsemo
-EUROSPORT 2 HD.tr => eurosport2hdtr => Belgeselsemo
-FB TV.tr => fbtvtr => Belgeselsemo
-FLASH HABER.tr => flashhabertr => Belgeselsemo
-FM TV.tr => fmtvtr => Belgeselsemo
-FRANCE 24 ARABIC.tr => france24arabictr => Belgeselsemo
-FRANCE 24 ENGLISH.tr => france24englishtr => Belgeselsemo
-FX HD.tr => fxhdtr => Belgeselsemo
-GZT TV.tr => gzttvtr => Belgeselsemo
-HABER GLOBAL HD.tr => haberglobalhdtr => Belgeselsemo
-HABERTÜRK HD.tr => haberturkhdtr => Belgeselsemo
-HALK TV.tr => halktvtr => Belgeselsemo
-HT SPOR.tr => htsportr => Belgeselsemo
-KADIRGA TV.tr => kadirgatvtr => Belgeselsemo
-KANAL 23.tr => kanal23tr => Belgeselsemo
-KANAL 26.tr => kanal26tr => Belgeselsemo
-KANAL 33.tr => kanal33tr => Belgeselsemo
-KANAL 7 HD.tr => kanal7hdtr => Belgeselsemo
-KANAL D HD.tr => kanaldhdtr => Belgeselsemo
-KANAL T.tr => kanalttr => Belgeselsemo
-KANAL V.tr => kanalvtr => Belgeselsemo
-KIBRIS ADA TV.tr => kibrisadatvtr => Belgeselsemo
-KIBRIS GENC TV.tr => kibrisgenctvtr => Belgeselsemo
-KIBRIS TV.tr => kibristvtr => Belgeselsemo
-KONTV HD.tr => kontvhdtr => Belgeselsemo
-KRT TV.tr => krttvtr => Belgeselsemo
-LOVE NATURE HD.tr => lovenaturehdtr => Belgeselsemo
-MELTEM TV.tr => meltemtvtr => Belgeselsemo
-MOONBUG KIDS TV.tr => moonbugkidstvtr => Belgeselsemo
-MİNİKA GO.tr => minikagotr => Belgeselsemo
-MİNİKA ÇOCUK.tr => minikacocuktr => Belgeselsemo
-NATIONAL GEOGRAPHIC HD.tr => nationalgeographichdtr => Belgeselsemo
-NATIONAL GEOGRAPHIC WILD HD.tr => nationalgeographicwildhdtr => Belgeselsemo
-NBA TV HD.tr => nbatvhdtr => Belgeselsemo
-NICKELODEON.tr => nickelodeontr => Belgeselsemo
-NICKTOONS.tr => nicktoonstr => Belgeselsemo
-NOW.tr => nowtr => Belgeselsemo
-NR1 DAMAR HD.tr => nr1damarhdtr => Belgeselsemo
-NTV HD.tr => ntvhdtr => Belgeselsemo
-NUMBER1 TURK HD.tr => number1turkhdtr => Belgeselsemo
-NUMBER1 TV HD.tr => number1tvhdtr => Belgeselsemo
-Nick JR.tr => nickjrtr => Belgeselsemo
-ON6.tr => on6tr => Belgeselsemo
-POWER TURK HD.tr => powerturkhdtr => Belgeselsemo
-POWER TV HD.tr => powertvhdtr => Belgeselsemo
-S SPORT 2.tr => ssport2tr => Belgeselsemo
-S SPORT.tr => ssporttr => Belgeselsemo
-SEMERKAND HD.tr => semerkandhdtr => Belgeselsemo
-SHOW TV HD.tr => showtvhdtr => Belgeselsemo
-SKY NEWS ARABIA.tr => skynewsarabiatr => Belgeselsemo
-SPACETOON.tr => spacetoontr => Belgeselsemo
-SPORTS TV HD.tr => sportstvhdtr => Belgeselsemo
-STAR TV HD.tr => startvhdtr => Belgeselsemo
-SÖZCÜ TV.tr => sozcutvtr => Belgeselsemo
-SİNEMA 1002 HD.tr => sinema1002hdtr => Belgeselsemo
-SİNEMA AKSİYON 2 HD.tr => sinemaaksiyon2hdtr => Belgeselsemo
-SİNEMA AİLE 2 HD.tr => sinemaaile2hdtr => Belgeselsemo
-SİNEMA AİLE HD.tr => sinemaailehdtr => Belgeselsemo
-SİNEMA KOMEDİ HD.tr => sinemakomedihdtr => Belgeselsemo
-SİNEMA TV 1001 HD.tr => sinematv1001hdtr => Belgeselsemo
-SİNEMA TV 2 HD.tr => sinematv2hdtr => Belgeselsemo
-SİNEMA TV AKSİYON HD.tr => sinematvaksiyonhdtr => Belgeselsemo
-SİNEMA TV HD.tr => sinematvhdtr => Belgeselsemo
-SİNEMA YERLİ 2 HD.tr => sinemayerli2hdtr => Belgeselsemo
-SİNEMA YERLİ HD.tr => sinemayerlihdtr => Belgeselsemo
-TARIH TV.tr => tarihtvtr => Belgeselsemo
-TARIM TV.tr => tarimtvtr => Belgeselsemo
-TELE1.tr => tele1tr => Belgeselsemo
-TEVE2 HD.tr => teve2hdtr => Belgeselsemo
-TGRT HABER HD.tr => tgrthaberhdtr => Belgeselsemo
-TLC.tr => tlctr => Belgeselsemo
-TMB TV.tr => tmbtvtr => Belgeselsemo
-TRT 2 HD.tr => trt2hdtr => Belgeselsemo
-TRT 3.tr => trt3tr => Belgeselsemo
-TRT ARABI.tr => trtarabitr => Belgeselsemo
-TRT AVAZ.tr => trtavaztr => Belgeselsemo
-TRT BELGESEL HD.tr => trtbelgeselhdtr => Belgeselsemo
-TRT DIYANET COCUK.tr => trtdiyanetcocuktr => Belgeselsemo
-TRT EBA.tr => trtebatr => Belgeselsemo
-TRT HABER HD.tr => trthaberhdtr => Belgeselsemo
-TRT KURDİ.tr => trtkurditr => Belgeselsemo
-TRT MÜZİK.tr => trtmuziktr => Belgeselsemo
-TRT SPOR HD.tr => trtsporhdtr => Belgeselsemo
-TRT SPOR YILDIZ.tr => trtsporyildiztr => Belgeselsemo
-TRT TÜRK.tr => trtturktr => Belgeselsemo
-TRT World HD.tr => trtworldhdtr => Belgeselsemo
-TRT ÇOCUK HD.tr => trtcocukhdtr => Belgeselsemo
-TRT1 HD.tr => trt1hdtr => Belgeselsemo
-TURKHABER.tr => turkhabertr => Belgeselsemo
-TV 2020.tr => tv2020tr => Belgeselsemo
-TV 4.tr => tv4tr => Belgeselsemo
-TV+ Info.tr => tvinfotr => Belgeselsemo
-TV100.tr => tv100tr => Belgeselsemo
-TV5 MONDE.tr => tv5mondetr => Belgeselsemo
-TV5.tr => tv5tr => Belgeselsemo
-TV8 HD.tr => tv8hdtr => Belgeselsemo
-TV8,5 HD.tr => tv85hdtr => Belgeselsemo
-TVNET HD.tr => tvnethdtr => Belgeselsemo
-TYT TÜRK.tr => tytturktr => Belgeselsemo
-TİVİ6.tr => tivi6tr => Belgeselsemo
-ULUSAL KANAL.tr => ulusalkanaltr => Belgeselsemo
-VAV TV.tr => vavtvtr => Belgeselsemo
-VIASAT EXPLORE.tr => viasatexploretr => Belgeselsemo
-VIASAT HISTORY HD.tr => viasathistoryhdtr => Belgeselsemo
-tabii TV.tr => tabiitvtr => Belgeselsemo
-tabii spor.tr => tabiisportr => Belgeselsemo
-ÇİFTÇİ TV.tr => ciftcitvtr => Belgeselsemo
-ÜLKE TV HD.tr => ulketvhdtr => Belgeselsemo
+24 HD.tr (Belgeselsemo) => 24hd
+360 HD.tr (Belgeselsemo) => 360hd
+A HABER HD.tr (Belgeselsemo) => ahaberhd
+A NEWS HD.tr (Belgeselsemo) => anewshd
+A PARA HD.tr (Belgeselsemo) => aparahd
+A SPOR HD.tr (Belgeselsemo) => asporhd
+A2 HD.tr (Belgeselsemo) => a2hd
+AKİT TV HD.tr (Belgeselsemo) => akittvhd
+AL JAZEERA ARABIC HD.tr (Belgeselsemo) => aljazeeraarabichd
+AL JAZEERA ENGLISH.tr (Belgeselsemo) => aljazeeraenglish
+AS TV.tr (Belgeselsemo) => astv
+ATV HD.tr (Belgeselsemo) => atvhd
+BABYTV.tr (Belgeselsemo) => babytv
+BBC News.tr (Belgeselsemo) => bbcnews
+BENGÜTÜRK.tr (Belgeselsemo) => benguturk
+BEYAZ TV HD.tr (Belgeselsemo) => beyaztvhd
+BLOOMBERG HT HD.tr (Belgeselsemo) => bloomberghthd
+BRT 1 HD.tr (Belgeselsemo) => brt1hd
+BRT 2 HD.tr (Belgeselsemo) => brt2hd
+Bloomberg.tr (Belgeselsemo) => bloomberg
+BluTV Play 1.tr (Belgeselsemo) => blutvplay1
+BluTV Play 2.tr (Belgeselsemo) => blutvplay2
+BİZİM EV TV.tr (Belgeselsemo) => bizimevtv
+CARTOON NETWORK.tr (Belgeselsemo) => cartoonnetwork
+CARTOONITO.tr (Belgeselsemo) => cartoonito
+CNBC-E.tr (Belgeselsemo) => cnbce
+CNN International.tr (Belgeselsemo) => cnninternational
+CNN TÜRK HD.tr (Belgeselsemo) => cnnturkhd
+DA VINCI HD.tr (Belgeselsemo) => davincihd
+DEUTSCHE WELLE ENGLISH.tr (Belgeselsemo) => deutschewelleenglish
+DISCOVERY CHANNEL HD.tr (Belgeselsemo) => discoverychannelhd
+DISNEY JUNIOR.tr (Belgeselsemo) => disneyjunior
+DMAX HD.tr (Belgeselsemo) => dmaxhd
+DREAM TÜRK.tr (Belgeselsemo) => dreamturk
+DUCK TV HD.tr (Belgeselsemo) => ducktvhd
+DİYANET TV.tr (Belgeselsemo) => diyanettv
+EKOL TV.tr (Belgeselsemo) => ekoltv
+EKOTÜRK HD.tr (Belgeselsemo) => ekoturkhd
+ENGLISH CLUB TV.tr (Belgeselsemo) => englishclubtv
+EPIC DRAMA.tr (Belgeselsemo) => epicdrama
+EURONEWS.tr (Belgeselsemo) => euronews
+EUROSPORT 1 HD.tr (Belgeselsemo) => eurosport1hd
+EUROSPORT 2 HD.tr (Belgeselsemo) => eurosport2hd
+FB TV.tr (Belgeselsemo) => fbtv
+FLASH HABER.tr (Belgeselsemo) => flashhaber
+FM TV.tr (Belgeselsemo) => fmtv
+FRANCE 24 ARABIC.tr (Belgeselsemo) => france24arabic
+FRANCE 24 ENGLISH.tr (Belgeselsemo) => france24english
+FX HD.tr (Belgeselsemo) => fxhd
+GZT TV.tr (Belgeselsemo) => gzttv
+HABER GLOBAL HD.tr (Belgeselsemo) => haberglobalhd
+HABERTÜRK HD.tr (Belgeselsemo) => haberturkhd
+HALK TV.tr (Belgeselsemo) => halktv
+HT SPOR.tr (Belgeselsemo) => htspor
+KADIRGA TV.tr (Belgeselsemo) => kadirgatv
+KANAL 23.tr (Belgeselsemo) => kanal23
+KANAL 26.tr (Belgeselsemo) => kanal26
+KANAL 33.tr (Belgeselsemo) => kanal33
+KANAL 7 HD.tr (Belgeselsemo) => kanal7hd
+KANAL D HD.tr (Belgeselsemo) => kanaldhd
+KANAL T.tr (Belgeselsemo) => kanalt
+KANAL V.tr (Belgeselsemo) => kanalv
+KIBRIS ADA TV.tr (Belgeselsemo) => kibrisadatv
+KIBRIS GENC TV.tr (Belgeselsemo) => kibrisgenctv
+KIBRIS TV.tr (Belgeselsemo) => kibristv
+KONTV HD.tr (Belgeselsemo) => kontvhd
+KRT TV.tr (Belgeselsemo) => krttv
+LOVE NATURE HD.tr (Belgeselsemo) => lovenaturehd
+MELTEM TV.tr (Belgeselsemo) => meltemtv
+MOONBUG KIDS TV.tr (Belgeselsemo) => moonbugkidstv
+MİNİKA GO.tr (Belgeselsemo) => minikago
+MİNİKA ÇOCUK.tr (Belgeselsemo) => minikacocuk
+NATIONAL GEOGRAPHIC HD.tr (Belgeselsemo) => nationalgeographichd
+NATIONAL GEOGRAPHIC WILD HD.tr (Belgeselsemo) => nationalgeographicwildhd
+NBA TV HD.tr (Belgeselsemo) => nbatvhd
+NICKELODEON.tr (Belgeselsemo) => nickelodeon
+NICKTOONS.tr (Belgeselsemo) => nicktoons
+NOW.tr (Belgeselsemo) => now
+NR1 DAMAR HD.tr (Belgeselsemo) => nr1damarhd
+NTV HD.tr (Belgeselsemo) => ntvhd
+NUMBER1 TURK HD.tr (Belgeselsemo) => number1turkhd
+NUMBER1 TV HD.tr (Belgeselsemo) => number1tvhd
+Nick JR.tr (Belgeselsemo) => nickjr
+ON6.tr (Belgeselsemo) => on6
+POWER TURK HD.tr (Belgeselsemo) => powerturkhd
+POWER TV HD.tr (Belgeselsemo) => powertvhd
+S SPORT 2.tr (Belgeselsemo) => ssport2
+S SPORT.tr (Belgeselsemo) => ssport
+SEMERKAND HD.tr (Belgeselsemo) => semerkandhd
+SHOW TV HD.tr (Belgeselsemo) => showtvhd
+SKY NEWS ARABIA.tr (Belgeselsemo) => skynewsarabia
+SPACETOON.tr (Belgeselsemo) => spacetoon
+SPORTS TV HD.tr (Belgeselsemo) => sportstvhd
+STAR TV HD.tr (Belgeselsemo) => startvhd
+SÖZCÜ TV.tr (Belgeselsemo) => sozcutv
+SİNEMA 1002 HD.tr (Belgeselsemo) => sinema1002hd
+SİNEMA AKSİYON 2 HD.tr (Belgeselsemo) => sinemaaksiyon2hd
+SİNEMA AİLE 2 HD.tr (Belgeselsemo) => sinemaaile2hd
+SİNEMA AİLE HD.tr (Belgeselsemo) => sinemaailehd
+SİNEMA KOMEDİ HD.tr (Belgeselsemo) => sinemakomedihd
+SİNEMA TV 1001 HD.tr (Belgeselsemo) => sinematv1001hd
+SİNEMA TV 2 HD.tr (Belgeselsemo) => sinematv2hd
+SİNEMA TV AKSİYON HD.tr (Belgeselsemo) => sinematvaksiyonhd
+SİNEMA TV HD.tr (Belgeselsemo) => sinematvhd
+SİNEMA YERLİ 2 HD.tr (Belgeselsemo) => sinemayerli2hd
+SİNEMA YERLİ HD.tr (Belgeselsemo) => sinemayerlihd
+TARIH TV.tr (Belgeselsemo) => tarihtv
+TARIM TV.tr (Belgeselsemo) => tarimtv
+TELE1.tr (Belgeselsemo) => tele1
+TEVE2 HD.tr (Belgeselsemo) => teve2hd
+TGRT HABER HD.tr (Belgeselsemo) => tgrthaberhd
+TLC.tr (Belgeselsemo) => tlc
+TMB TV.tr (Belgeselsemo) => tmbtv
+TRT 2 HD.tr (Belgeselsemo) => trt2hd
+TRT 3.tr (Belgeselsemo) => trt3
+TRT ARABI.tr (Belgeselsemo) => trtarabi
+TRT AVAZ.tr (Belgeselsemo) => trtavaz
+TRT BELGESEL HD.tr (Belgeselsemo) => trtbelgeselhd
+TRT DIYANET COCUK.tr (Belgeselsemo) => trtdiyanetcocuk
+TRT EBA.tr (Belgeselsemo) => trteba
+TRT HABER HD.tr (Belgeselsemo) => trthaberhd
+TRT KURDİ.tr (Belgeselsemo) => trtkurdi
+TRT MÜZİK.tr (Belgeselsemo) => trtmuzik
+TRT SPOR HD.tr (Belgeselsemo) => trtsporhd
+TRT SPOR YILDIZ.tr (Belgeselsemo) => trtsporyildiz
+TRT TÜRK.tr (Belgeselsemo) => trtturk
+TRT World HD.tr (Belgeselsemo) => trtworldhd
+TRT ÇOCUK HD.tr (Belgeselsemo) => trtcocukhd
+TRT1 HD.tr (Belgeselsemo) => trt1hd
+TURKHABER.tr (Belgeselsemo) => turkhaber
+TV 2020.tr (Belgeselsemo) => tv2020
+TV 4.tr (Belgeselsemo) => tv4
+TV+ Info.tr (Belgeselsemo) => tvinfo
+TV100.tr (Belgeselsemo) => tv100
+TV5 MONDE.tr (Belgeselsemo) => tv5monde
+TV5.tr (Belgeselsemo) => tv5
+TV8 HD.tr (Belgeselsemo) => tv8hd
+TV8,5 HD.tr (Belgeselsemo) => tv85hd
+TVNET HD.tr (Belgeselsemo) => tvnethd
+TYT TÜRK.tr (Belgeselsemo) => tytturk
+TİVİ6.tr (Belgeselsemo) => tivi6
+ULUSAL KANAL.tr (Belgeselsemo) => ulusalkanal
+VAV TV.tr (Belgeselsemo) => vavtv
+VIASAT EXPLORE.tr (Belgeselsemo) => viasatexplore
+VIASAT HISTORY HD.tr (Belgeselsemo) => viasathistoryhd
+tabii TV.tr (Belgeselsemo) => tabiitv
+tabii spor.tr (Belgeselsemo) => tabiispor
+ÇİFTÇİ TV.tr (Belgeselsemo) => ciftcitv
+ÜLKE TV HD.tr (Belgeselsemo) => ulketvhd
