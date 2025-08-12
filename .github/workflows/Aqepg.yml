@@ -1,35 +1,32 @@
-name: EPG Güncelle
+name: Günlük EPG Güncelleme
 
 on:
   schedule:
-    - cron: "0 2 * * *"  # Her gün sabah 05:00 Türkiye saati (02:00 UTC)
-  workflow_dispatch:      # Elle çalıştırmak için
+    - cron: "0 3 * * *" # Her gün Türkiye saati 06:00 (UTC+3)
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: 📥 Depoyu klonla
-        uses: actions/checkout@v4
+      - name: Depoyu klonla
+        uses: actions/checkout@v3
 
-      - name: 🐍 Python kur
-        uses: actions/setup-python@v5
+      - name: Python kur
+        uses: actions/setup-python@v4
         with:
-          python-version: "3.x"
+          python-version: '3.x'
 
-      - name: 📦 Bağımlılıkları yükle
-        run: |
-          pip install requests beautifulsoup4
+      - name: Gerekli kütüphaneleri yükle
+        run: pip install -r requirements.txt
 
-      - name: ▶️ EPG scriptini çalıştır
-        run: |
-          python aqepg.py
+      - name: EPG oluştur
+        run: python epg.py
 
-      - name: 💾 Değişiklikleri commit et ve gönder
+      - name: Değişiklikleri commit et ve pushla
         run: |
-          git config --global user.name "github-actions"
+          git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
-          git add epg.xml kanallar.txt uyusmayanlar.txt
-          git commit -m "🔄 EPG güncellendi ($(date '+%Y-%m-%d %H:%M'))" || echo "No changes"
+          git add epg.xml kanallar.txt
+          git commit -m "Günlük EPG güncellemesi"
           git push
