@@ -20,9 +20,13 @@ def normalize_tvg_id(name):
     name = re.sub(r"[^a-z0-9]+", "", name)
     return name
 
+def remove_tr_suffix(tvg_id):
+    """Tvg-id sonundaki tr eklerini kaldırır"""
+    return re.sub(r"(tr)$", "", tvg_id)
+
 # 1️⃣ Digiturk'ten kanal listesi ve programları al
 def get_digiturk_epg():
-    kanallar_dict = {}  # {KanalAdı: tvg-id}
+    kanallar_dict = {}
     tv = ET.Element("tv")
     today = datetime.now()
 
@@ -102,14 +106,15 @@ def merge_belgeselsemo(tv_root, kanallar_dict):
         ch_id = prog.get("channel")
         ch_name = belgesel_map.get(ch_id, ch_id)
 
-        if ch_name in kanallar_dict:
-            digiturk_tvg_id = kanallar_dict[ch_name]
-            kaynak = "Digiturk"
+        digiturk_tvg_id = kanallar_dict.get(ch_name)
+        if not digiturk_tvg_id:
+            raw_id = normalize_tvg_id(ch_name)
+            raw_id = remove_tr_suffix(raw_id)
+            kanal_kaynak_listesi[ch_name] = ("Belgeselsemo", raw_id)
+            final_tvg_id = raw_id
         else:
-            digiturk_tvg_id = normalize_tvg_id(ch_name)
-            kaynak = "Belgeselsemo"
-
-        kanal_kaynak_listesi[ch_name] = (digiturk_tvg_id, kaynak)
+            kanal_kaynak_listesi[ch_name] = ("Digiturk", digiturk_tvg_id)
+            final_tvg_id = digiturk_tvg_id
 
         start = datetime.strptime(prog.get("start")[:12], "%Y%m%d%H%M") + timedelta(hours=3)
         stop = datetime.strptime(prog.get("stop")[:12], "%Y%m%d%H%M") + timedelta(hours=3)
@@ -117,7 +122,7 @@ def merge_belgeselsemo(tv_root, kanallar_dict):
         programme = ET.SubElement(tv_root, "programme", {
             "start": start.strftime("%Y%m%d%H%M%S +0300"),
             "stop": stop.strftime("%Y%m%d%H%M%S +0300"),
-            "channel": digiturk_tvg_id
+            "channel": final_tvg_id
         })
 
         title_elem = prog.find("title")
@@ -135,8 +140,8 @@ if __name__ == "__main__":
 
     print("📄 Kanal listesi kaydediliyor...")
     with open(KANALLAR_DOSYA, "w", encoding="utf-8") as f:
-        for ch_name, (tvg_id, kaynak) in sorted(kanal_kaynak_listesi.items()):
-            f.write(f"{ch_name} => {tvg_id} => {kaynak}\n")
+        for ad, (kaynak, tid) in sorted(kanal_kaynak_listesi.items()):
+            f.write(f"{ad} ({kaynak}) => {tid}\n")
 
     print("💾 EPG XML kaydediliyor...")
     tree = ET.ElementTree(tv_root)
