@@ -1,0 +1,32 @@
+name: Günlük EPG Güncelleme
+
+on:
+  schedule:
+    - cron: "0 3 * * *"  # Her gün Türkiye saatiyle 06:00 (UTC 03:00)
+  workflow_dispatch:      # Manuel çalıştırma seçeneği
+
+jobs:
+  update-epg:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repo'yu klonla
+        uses: actions/checkout@v4
+
+      - name: Python kur
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Gerekli paketleri yükle
+        run: pip install -r requirements.txt
+
+      - name: EPG çek
+        run: python aqepg.py
+
+      - name: Değişiklikleri commit et ve gönder
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add epg.xml
+          git commit -m "EPG Güncellendi: $(date '+%Y-%m-%d %H:%M:%S')" || echo "Değişiklik yok"
+          git push
