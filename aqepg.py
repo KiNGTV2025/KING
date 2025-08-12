@@ -11,7 +11,6 @@ BELGESELSEMO_URL = "https://belgeselsemo.com.tr/yayin-akisi2/xml/turkey3.xml"
 
 KANALLAR_DOSYA = "kanallar.txt"
 EPG_CIKTI = "epg.xml"
-UYUSMAYAN_DOSYA = "uyusmayanlar.txt"
 
 def normalize_tvg_id(name):
     """Kanal adından tvg-id oluşturur"""
@@ -23,7 +22,7 @@ def normalize_tvg_id(name):
 
 # 1️⃣ Digiturk'ten kanal listesi ve programları al
 def get_digiturk_epg():
-    kanallar_dict = {}
+    kanallar_dict = {}  # {KanalAdı: tvg-id}
     tv = ET.Element("tv")
     today = datetime.now()
 
@@ -85,7 +84,6 @@ def get_digiturk_epg():
 
 # 2️⃣ Belgeselsemo EPG'sini çek ve Digiturk tvg-id'lerine göre güncelle
 def merge_belgeselsemo(tv_root, kanallar_dict):
-    uyusmayanlar = set()
     print("📥 Belgeselsemo XML indiriliyor...")
     r = requests.get(BELGESELSEMO_URL, timeout=15)
     r.raise_for_status()
@@ -98,15 +96,21 @@ def merge_belgeselsemo(tv_root, kanallar_dict):
             ch_name = name_elem.text.strip()
             belgesel_map[ch.get("id")] = ch_name
 
+    kanal_kaynak_listesi = {}
+
     for prog in belgesel_tree.findall("programme"):
         ch_id = prog.get("channel")
         ch_name = belgesel_map.get(ch_id, ch_id)
-        digiturk_tvg_id = kanallar_dict.get(ch_name)
-        if not digiturk_tvg_id:
-            uyusmayanlar.add(f"{ch_name} => {ch_id}")
-            continue
 
-        # Türkiye saatine +3 ekle
+        if ch_name in kanallar_dict:
+            digiturk_tvg_id = kanallar_dict[ch_name]
+            kaynak = "Digiturk"
+        else:
+            digiturk_tvg_id = normalize_tvg_id(ch_name)
+            kaynak = "Belgeselsemo"
+
+        kanal_kaynak_listesi[ch_name] = (digiturk_tvg_id, kaynak)
+
         start = datetime.strptime(prog.get("start")[:12], "%Y%m%d%H%M") + timedelta(hours=3)
         stop = datetime.strptime(prog.get("stop")[:12], "%Y%m%d%H%M") + timedelta(hours=3)
 
@@ -119,26 +123,23 @@ def merge_belgeselsemo(tv_root, kanallar_dict):
         title_elem = prog.find("title")
         ET.SubElement(programme, "title").text = title_elem.text if title_elem is not None else "Bilinmeyen Program"
 
-    # Uyuşmayanları kaydet
-    if uyusmayanlar:
-        with open(UYUSMAYAN_DOSYA, "w", encoding="utf-8") as f:
-            f.write("\n".join(sorted(uyusmayanlar)))
+    return kanal_kaynak_listesi
 
 # 3️⃣ Ana çalışma
 if __name__ == "__main__":
     print("📡 Digiturk EPG çekiliyor...")
     tv_root, kanallar_dict = get_digiturk_epg()
 
+    print("🔄 Belgeselsemo ile birleştiriliyor...")
+    kanal_kaynak_listesi = merge_belgeselsemo(tv_root, kanallar_dict)
+
     print("📄 Kanal listesi kaydediliyor...")
     with open(KANALLAR_DOSYA, "w", encoding="utf-8") as f:
-        for ad, tid in sorted(kanallar_dict.items()):
-            f.write(f"{ad} => {tid}\n")
-
-    print("🔄 Belgeselsemo ile birleştiriliyor...")
-    merge_belgeselsemo(tv_root, kanallar_dict)
+        for ch_name, (tvg_id, kaynak) in sorted(kanal_kaynak_listesi.items()):
+            f.write(f"{ch_name} => {tvg_id} => {kaynak}\n")
 
     print("💾 EPG XML kaydediliyor...")
     tree = ET.ElementTree(tv_root)
     tree.write(EPG_CIKTI, encoding="utf-8", xml_declaration=True)
 
-    print(f"✅ {EPG_CIKTI} oluşturuldu, {KANALLAR_DOSYA} ve {UYUSMAYAN_DOSYA} hazır.")
+    print(f"✅ {EPG_CIKTI} oluşturuldu, {KANALLAR_DOSYA} hazır.")
