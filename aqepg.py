@@ -5,13 +5,14 @@ import xml.etree.ElementTree as ET
 import urllib.parse
 import unicodedata
 import re
-from collections import defaultdict, Counter
+from collections import defaultdict
 
 DIGITURK_GUN_SAYISI = 2
 BELGESELSEMO_URL = "https://belgeselsemo.com.tr/yayin-akisi2/xml/turkey3.xml"
 
 KANALLAR_DOSYA = "kanallar.txt"
 EPG_CIKTI = "epg.xml"
+KAYMA_TOLERANSI_DK = 15
 
 def normalize_tvg_id(name):
     """Kanal adından tvg-id oluşturur"""
@@ -21,13 +22,15 @@ def normalize_tvg_id(name):
     name = re.sub(r"[^a-z0-9]+", "", name)
     return name
 
-# 1️⃣ Digiturk'ten kanal listesi ve programları al
+def temizle_hd_tr(name):
+    """Belgeselsemo'daki HD, .tr, _tr gibi ekleri temizler"""
+    return re.sub(r"(hd|\.tr|_tr)$", "", name, flags=re.IGNORECASE)
+
+# 1️⃣ Digiturk EPG
 def get_digiturk_epg():
     kanallar_dict = {}
     tv = ET.Element("tv")
     today = datetime.now()
-
-    all_programs = defaultdict(list)
 
     for gun in range(DIGITURK_GUN_SAYISI):
         tarih = today + timedelta(days=gun)
@@ -51,12 +54,11 @@ def get_digiturk_epg():
             h3 = channel.select_one("h3.tvguide-channel-name")
             channel_name = h3.get_text(strip=True) if h3 else "Bilinmeyen Kanal"
             tvg_id = normalize_tvg_id(channel_name)
-            kanallar_dict[channel_name] = tvg_id
+            kanallar_dict[channel_name] = {"digiturk": tvg_id}
 
-            channel_elem = tv.find(f"./channel[@id='{tvg_id}']")
-            if channel_elem is None:
-                channel_elem = ET.SubElement(tv, "channel", id=tvg_id)
-                ET.SubElement(channel_elem, "display-name").text = channel_name
+            if tv.find(f"./channel[@id='{tvg_id}']") is None:
+                ch_elem = ET.SubElement(tv, "channel", id=tvg_id)
+                ET.SubElement(ch_elem, "display-name").text = channel_name
 
             programs = channel.select("div.tvGuideResult-box-wholeDates.channelDetail")
             for prog in programs:
@@ -73,100 +75,89 @@ def get_digiturk_epg():
 
                 start_dt = datetime.strptime(base_date_str, "%m/%d/%Y %H:%M:%S")
                 hour, minute = map(int, start_time_str.split(":"))
-                start_dt = start_dt.replace(hour=hour, minute=minute, second=0)
+                start_dt = start_dt.replace(hour=hour, minute=minute)
                 stop_dt = start_dt + timedelta(minutes=int("".join(filter(str.isdigit, duration_str))) or 30)
 
-                programme = ET.SubElement(tv, "programme", {
+                ET.SubElement(tv, "programme", {
                     "start": start_dt.strftime("%Y%m%d%H%M%S +0300"),
                     "stop": stop_dt.strftime("%Y%m%d%H%M%S +0300"),
                     "channel": tvg_id
-                })
-                ET.SubElement(programme, "title").text = title
+                }).append(ET.Element("title", text=title))
 
-                all_programs[tvg_id].append((title, start_dt, stop_dt))
+    return tv, kanallar_dict
 
-    return tv, kanallar_dict, all_programs
-
-# 2️⃣ Belgeselsemo EPG'sini çek, kayma tespit et ve ekle
-def merge_belgeselsemo(tv_root, kanallar_dict, digiturk_programs):
+# 2️⃣ Belgeselsemo EPG
+def merge_belgeselsemo(tv_root, kanallar_dict):
     print("📥 Belgeselsemo XML indiriliyor...")
     r = requests.get(BELGESELSEMO_URL, timeout=15)
     r.raise_for_status()
     belgesel_tree = ET.fromstring(r.content)
 
     belgesel_map = {}
-    belgesel_programs = defaultdict(list)
-
     for ch in belgesel_tree.findall("channel"):
         name_elem = ch.find("display-name")
         if name_elem is not None:
-            ch_name = name_elem.text.strip()
+            ch_name = temizle_hd_tr(name_elem.text.strip())
             belgesel_map[ch.get("id")] = ch_name
+            if ch_name in kanallar_dict:
+                kanallar_dict[ch_name]["belgeselsemo"] = normalize_tvg_id(ch_name)
+            else:
+                kanallar_dict[ch_name] = {"belgeselsemo": normalize_tvg_id(ch_name)}
 
-    # Kayma tespiti
-    kayma_dict = {}
+    # Zaman kayması tespiti
+    kayma_dict = defaultdict(list)
+    digiturk_programs = defaultdict(list)
+
+    for prog in tv_root.findall("programme"):
+        digiturk_programs[prog.get("channel")].append(prog.get("start"))
+
     for prog in belgesel_tree.findall("programme"):
         ch_id = prog.get("channel")
         ch_name = belgesel_map.get(ch_id, ch_id)
-        digiturk_tvg_id = kanallar_dict.get(ch_name)
+        digiturk_tvg_id = kanallar_dict.get(ch_name, {}).get("digiturk")
         if not digiturk_tvg_id:
             continue
+        start_b = datetime.strptime(prog.get("start")[:12], "%Y%m%d%H%M") + timedelta(hours=3)
+        if digiturk_programs[digiturk_tvg_id]:
+            first_d = datetime.strptime(digiturk_programs[digiturk_tvg_id][0][:12], "%Y%m%d%H%M")
+            fark = (start_b - first_d).total_seconds() / 60
+            kayma_dict[digiturk_tvg_id].append(fark)
 
-        title_elem = prog.find("title")
-        title = title_elem.text if title_elem is not None else "Bilinmeyen Program"
+    ort_kayma = {k: sum(v)/len(v) for k, v in kayma_dict.items() if abs(sum(v)/len(v)) <= KAYMA_TOLERANSI_DK}
 
-        start_bel = datetime.strptime(prog.get("start")[:12], "%Y%m%d%H%M")
-        start_bel += timedelta(hours=3)  # TR saati
-        belgesel_programs[digiturk_tvg_id].append((title, start_bel))
-
-    for ch_id, bel_prog_list in belgesel_programs.items():
-        if ch_id in digiturk_programs:
-            farklar = []
-            for bel_title, bel_start in bel_prog_list:
-                for dig_title, dig_start, _ in digiturk_programs[ch_id]:
-                    if bel_title == dig_title:
-                        farklar.append(int((bel_start - dig_start).total_seconds() / 60))
-                        break
-            if farklar:
-                en_cok = Counter(farklar).most_common(1)[0][0]
-                if all(abs(f - en_cok) <= 2 for f in farklar):  # 2 dakika tolerans
-                    kayma_dict[ch_id] = en_cok
-
-    print(f"⏱ Kayma Tespit: {kayma_dict}")
-
-    # Belgeselsemo programlarını ekle
+    # Program ekleme
     for prog in belgesel_tree.findall("programme"):
         ch_id = prog.get("channel")
         ch_name = belgesel_map.get(ch_id, ch_id)
-        digiturk_tvg_id = kanallar_dict.get(ch_name, normalize_tvg_id(ch_name))
+        digiturk_tvg_id = kanallar_dict.get(ch_name, {}).get("digiturk", normalize_tvg_id(ch_name))
 
         start = datetime.strptime(prog.get("start")[:12], "%Y%m%d%H%M") + timedelta(hours=3)
         stop = datetime.strptime(prog.get("stop")[:12], "%Y%m%d%H%M") + timedelta(hours=3)
 
-        if digiturk_tvg_id in kayma_dict:
-            start += timedelta(minutes=kayma_dict[digiturk_tvg_id])
-            stop += timedelta(minutes=kayma_dict[digiturk_tvg_id])
+        if digiturk_tvg_id in ort_kayma:
+            start += timedelta(minutes=ort_kayma[digiturk_tvg_id])
+            stop += timedelta(minutes=ort_kayma[digiturk_tvg_id])
 
         programme = ET.SubElement(tv_root, "programme", {
             "start": start.strftime("%Y%m%d%H%M%S +0300"),
             "stop": stop.strftime("%Y%m%d%H%M%S +0300"),
             "channel": digiturk_tvg_id
         })
+
         title_elem = prog.find("title")
         ET.SubElement(programme, "title").text = title_elem.text if title_elem is not None else "Bilinmeyen Program"
 
-# 3️⃣ Ana çalışma
 if __name__ == "__main__":
     print("📡 Digiturk EPG çekiliyor...")
-    tv_root, kanallar_dict, digiturk_programs = get_digiturk_epg()
+    tv_root, kanallar_dict = get_digiturk_epg()
+
+    print("🔄 Belgeselsemo ile birleştiriliyor...")
+    merge_belgeselsemo(tv_root, kanallar_dict)
 
     print("📄 Kanal listesi kaydediliyor...")
     with open(KANALLAR_DOSYA, "w", encoding="utf-8") as f:
-        for ad, tid in sorted(kanallar_dict.items()):
-            f.write(f"{ad} => {tid}\n")
-
-    print("🔄 Belgeselsemo ile birleştiriliyor...")
-    merge_belgeselsemo(tv_root, kanallar_dict, digiturk_programs)
+        for ad, ids in sorted(kanallar_dict.items()):
+            f.write(f"{ad} => Digiturk: {ids.get('digiturk','-')} | Belgeselsemo: {ids.get('belgeselsemo','-')}\n")
 
     print("💾 EPG XML kaydediliyor...")
     tree = ET.ElementTree(tv_root)
