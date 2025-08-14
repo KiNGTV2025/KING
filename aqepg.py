@@ -7,6 +7,12 @@ import unicodedata
 import re
 from collections import defaultdict
 
+try:
+    import cloudscraper
+    SCRAPER_AVAILABLE = True
+except ImportError:
+    SCRAPER_AVAILABLE = False
+
 DIGITURK_GUN_SAYISI = 2
 BELGESELSEMO_URL = "https://belgeselsemo.com.tr/yayin-akisi2/xml/turkey3.xml"
 
@@ -14,8 +20,9 @@ KANALLAR_DOSYA = "kanallar.txt"
 EPG_CIKTI = "epg.xml"
 KAYMA_TOLERANSI_DK = 15
 
+UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0 Safari/537.36"
+
 def normalize_tvg_id(name):
-    """Kanal adından tvg-id oluşturur"""
     name = name.lower()
     name = unicodedata.normalize("NFD", name)
     name = name.encode("ascii", "ignore").decode("utf-8")
@@ -23,8 +30,22 @@ def normalize_tvg_id(name):
     return name
 
 def temizle_hd_tr(name):
-    """Belgeselsemo'daki HD, .tr, _tr gibi ekleri temizler"""
     return re.sub(r"(hd|\.tr|_tr)$", "", name, flags=re.IGNORECASE)
+
+def create_session():
+    if SCRAPER_AVAILABLE:
+        s = cloudscraper.create_scraper()
+    else:
+        s = requests.Session()
+    s.headers.update({
+        "User-Agent": UA,
+        "Accept": "*/*",
+        "Referer": "https://www.digiturk.com.tr/yayin-akisi",
+        "X-Requested-With": "XMLHttpRequest"
+    })
+    # Önce yayın akışı sayfasına gidip çerezleri alıyoruz
+    s.get("https://www.digiturk.com.tr/yayin-akisi", timeout=10)
+    return s
 
 # 1️⃣ Digiturk EPG
 def get_digiturk_epg():
@@ -32,21 +53,18 @@ def get_digiturk_epg():
     tv = ET.Element("tv")
     today = datetime.now()
 
+    session = create_session()
+
     for gun in range(DIGITURK_GUN_SAYISI):
         tarih = today + timedelta(days=gun)
         base_date_str = tarih.strftime("%m/%d/%Y") + " 00:00:00"
         encoded_date = urllib.parse.quote(base_date_str)
 
         url = f"https://www.digiturk.com.tr/Ajax/GetTvGuideFromDigiturk?Day={encoded_date}"
-        headers = {
-            "accept": "*/*",
-            "referer": "https://www.digiturk.com.tr/yayin-akisi",
-            "user-agent": "Mozilla/5.0",
-            "x-requested-with": "XMLHttpRequest"
-        }
 
-        r = requests.get(url, headers=headers)
+        r = session.get(url, timeout=10)
         r.raise_for_status()
+
         soup = BeautifulSoup(r.text, "html.parser")
         channels = soup.select("div.swiper-slide.channelContent")
 
@@ -78,15 +96,16 @@ def get_digiturk_epg():
                 start_dt = start_dt.replace(hour=hour, minute=minute)
                 stop_dt = start_dt + timedelta(minutes=int("".join(filter(str.isdigit, duration_str))) or 30)
 
-                ET.SubElement(tv, "programme", {
+                programme = ET.SubElement(tv, "programme", {
                     "start": start_dt.strftime("%Y%m%d%H%M%S +0300"),
                     "stop": stop_dt.strftime("%Y%m%d%H%M%S +0300"),
                     "channel": tvg_id
-                }).append(ET.Element("title", text=title))
+                })
+                ET.SubElement(programme, "title").text = title
 
     return tv, kanallar_dict
 
-# 2️⃣ Belgeselsemo EPG
+# 2️⃣ Belgeselsemo EPG (senin kodunla aynı)
 def merge_belgeselsemo(tv_root, kanallar_dict):
     print("📥 Belgeselsemo XML indiriliyor...")
     r = requests.get(BELGESELSEMO_URL, timeout=15)
@@ -104,7 +123,6 @@ def merge_belgeselsemo(tv_root, kanallar_dict):
             else:
                 kanallar_dict[ch_name] = {"belgeselsemo": normalize_tvg_id(ch_name)}
 
-    # Zaman kayması tespiti
     kayma_dict = defaultdict(list)
     digiturk_programs = defaultdict(list)
 
@@ -125,7 +143,6 @@ def merge_belgeselsemo(tv_root, kanallar_dict):
 
     ort_kayma = {k: sum(v)/len(v) for k, v in kayma_dict.items() if abs(sum(v)/len(v)) <= KAYMA_TOLERANSI_DK}
 
-    # Program ekleme
     for prog in belgesel_tree.findall("programme"):
         ch_id = prog.get("channel")
         ch_name = belgesel_map.get(ch_id, ch_id)
