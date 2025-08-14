@@ -6,12 +6,7 @@ import urllib.parse
 import unicodedata
 import re
 from collections import defaultdict
-
-try:
-    import cloudscraper
-    SCRAPER_AVAILABLE = True
-except ImportError:
-    SCRAPER_AVAILABLE = False
+import concurrent.futures
 
 DIGITURK_GUN_SAYISI = 2
 BELGESELSEMO_URL = "https://belgeselsemo.com.tr/yayin-akisi2/xml/turkey3.xml"
@@ -20,8 +15,48 @@ KANALLAR_DOSYA = "kanallar.txt"
 EPG_CIKTI = "epg.xml"
 KAYMA_TOLERANSI_DK = 15
 
-UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0 Safari/537.36"
+# ---------- PROXY BULMA ----------
+def get_tr_proxies():
+    print("🌐 Türkiye proxy listesi çekiliyor...")
+    url = "https://www.proxy-list.download/api/v1/get?type=http&country=TR"
+    try:
+        r = requests.get(url, timeout=10)
+        r.raise_for_status()
+        proxies = [p.strip() for p in r.text.split("\n") if p.strip()]
+        print(f"🔍 {len(proxies)} adet TR proxy bulundu.")
+        return proxies
+    except Exception as e:
+        print("❌ Proxy listesi alınamadı:", e)
+        return []
 
+def find_working_proxy(test_url):
+    proxies = get_tr_proxies()
+    if not proxies:
+        return None
+
+    def test_proxy(proxy):
+        try:
+            resp = requests.get(test_url, proxies={
+                "http": f"http://{proxy}",
+                "https": f"http://{proxy}"
+            }, headers={"user-agent": "Mozilla/5.0"}, timeout=5)
+            if resp.status_code == 200:
+                return proxy
+        except:
+            return None
+
+    print("⚡ Proxy test ediliyor...")
+    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+        futures = [executor.submit(test_proxy, proxy) for proxy in proxies]
+        for f in concurrent.futures.as_completed(futures):
+            result = f.result()
+            if result:
+                print(f"✅ Çalışan proxy bulundu: {result}")
+                return result
+    print("❌ Hiçbir proxy çalışmadı.")
+    return None
+
+# ---------- TVG ID NORMALİZE ----------
 def normalize_tvg_id(name):
     name = name.lower()
     name = unicodedata.normalize("NFD", name)
@@ -32,28 +67,11 @@ def normalize_tvg_id(name):
 def temizle_hd_tr(name):
     return re.sub(r"(hd|\.tr|_tr)$", "", name, flags=re.IGNORECASE)
 
-def create_session():
-    if SCRAPER_AVAILABLE:
-        s = cloudscraper.create_scraper()
-    else:
-        s = requests.Session()
-    s.headers.update({
-        "User-Agent": UA,
-        "Accept": "*/*",
-        "Referer": "https://www.digiturk.com.tr/yayin-akisi",
-        "X-Requested-With": "XMLHttpRequest"
-    })
-    # Önce yayın akışı sayfasına gidip çerezleri alıyoruz
-    s.get("https://www.digiturk.com.tr/yayin-akisi", timeout=10)
-    return s
-
-# 1️⃣ Digiturk EPG
-def get_digiturk_epg():
+# ---------- DIGITURK EPG ----------
+def get_digiturk_epg(proxy=None):
     kanallar_dict = {}
     tv = ET.Element("tv")
     today = datetime.now()
-
-    session = create_session()
 
     for gun in range(DIGITURK_GUN_SAYISI):
         tarih = today + timedelta(days=gun)
@@ -61,8 +79,18 @@ def get_digiturk_epg():
         encoded_date = urllib.parse.quote(base_date_str)
 
         url = f"https://www.digiturk.com.tr/Ajax/GetTvGuideFromDigiturk?Day={encoded_date}"
+        headers = {
+            "accept": "*/*",
+            "referer": "https://www.digiturk.com.tr/yayin-akisi",
+            "user-agent": "Mozilla/5.0",
+            "x-requested-with": "XMLHttpRequest"
+        }
 
-        r = session.get(url, timeout=10)
+        kwargs = {"headers": headers, "timeout": 10}
+        if proxy:
+            kwargs["proxies"] = {"http": f"http://{proxy}", "https": f"http://{proxy}"}
+
+        r = requests.get(url, **kwargs)
         r.raise_for_status()
 
         soup = BeautifulSoup(r.text, "html.parser")
@@ -96,16 +124,15 @@ def get_digiturk_epg():
                 start_dt = start_dt.replace(hour=hour, minute=minute)
                 stop_dt = start_dt + timedelta(minutes=int("".join(filter(str.isdigit, duration_str))) or 30)
 
-                programme = ET.SubElement(tv, "programme", {
+                ET.SubElement(tv, "programme", {
                     "start": start_dt.strftime("%Y%m%d%H%M%S +0300"),
                     "stop": stop_dt.strftime("%Y%m%d%H%M%S +0300"),
                     "channel": tvg_id
-                })
-                ET.SubElement(programme, "title").text = title
+                }).append(ET.Element("title", text=title))
 
     return tv, kanallar_dict
 
-# 2️⃣ Belgeselsemo EPG (senin kodunla aynı)
+# ---------- BELGESELSEMO ----------
 def merge_belgeselsemo(tv_root, kanallar_dict):
     print("📥 Belgeselsemo XML indiriliyor...")
     r = requests.get(BELGESELSEMO_URL, timeout=15)
@@ -164,9 +191,13 @@ def merge_belgeselsemo(tv_root, kanallar_dict):
         title_elem = prog.find("title")
         ET.SubElement(programme, "title").text = title_elem.text if title_elem is not None else "Bilinmeyen Program"
 
+# ---------- MAIN ----------
 if __name__ == "__main__":
     print("📡 Digiturk EPG çekiliyor...")
-    tv_root, kanallar_dict = get_digiturk_epg()
+
+    # Önce proxy bulmayı dene
+    proxy = find_working_proxy("https://www.digiturk.com.tr/yayin-akisi")
+    tv_root, kanallar_dict = get_digiturk_epg(proxy=proxy)
 
     print("🔄 Belgeselsemo ile birleştiriliyor...")
     merge_belgeselsemo(tv_root, kanallar_dict)
